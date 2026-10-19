@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUILD AN EMAIL! - Form 2 English Writing Arcade Game</title>
+    <!-- Tailwind CSS for utility layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Pixel Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for Retro Audio & BGM Loop -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <style>
+        :root {
+            --sky-blue: #4da6ff;
+            --cloud-white: #f0f8ff;
+            --arcade-yellow: #ffcc00;
+            --arcade-red: #ff3366;
+            --arcade-green: #2ed573;
+            --navy-dark: #1e272e;
+            --envelope-cream: #fffdf0;
+        }
+
+        body {
+            font-family: 'Fredoka', cursive, sans-serif;
+            background-color: #38ada9;
+            background-image: 
+                linear-gradient(0deg, rgba(255,255,255,0.15) 50%, transparent 50%),
+                linear-gradient(90deg, rgba(255,255,255,0.15) 50%, transparent 50%);
+            background-size: 32px 32px;
+            color: #1e272e;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        .font-pixel {
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        .font-retro-sub {
+            font-family: 'VT323', monospace;
+        }
+
+        /* Envelope Airmail Stripe Effect */
+        .airmail-frame {
+            background-color: var(--envelope-cream);
+            border: 12px solid transparent;
+            border-image: repeating-linear-gradient(
+                -45deg,
+                #ff3366 0, #ff3366 15px,
+                #fff 15px, #fff 25px,
+                #4da6ff 25px, #4da6ff 40px,
+                #fff 40px, #fff 50px
+            ) 20;
+            box-shadow: 0 10px 0 #12181b;
+        }
+
+        /* 3D Glossy Arcade Buttons */
+        .btn-arcade {
+            position: relative;
+            display: inline-block;
+            font-family: 'Press Start 2P', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 4px solid #1e272e;
+            border-radius: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.08s ease;
+            box-shadow: 0 6px 0 #12181b, 0 10px 10px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-arcade:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #12181b, 0 12px 14px rgba(0,0,0,0.25);
+        }
+
+        .btn-arcade:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #12181b, 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-yellow {
+            background: linear-gradient(180deg, #ffe066 0%, #ffcc00 50%, #e6b800 100%);
+            color: #1e272e;
+            text-shadow: none;
+        }
+
+        .btn-red {
+            background: linear-gradient(180deg, #ff668c 0%, #ff3366 50%, #cc0033 100%);
+            color: #ffffff;
+        }
+
+        .btn-blue {
+            background: linear-gradient(180deg, #70b8ff 0%, #4da6ff 50%, #0077e6 100%);
+            color: #ffffff;
+        }
+
+        .btn-green {
+            background: linear-gradient(180deg, #51e389 0%, #2ed573 50%, #1e9650 100%);
+            color: #ffffff;
+        }
+
+        .btn-purple {
+            background: linear-gradient(180deg, #b088ff 0%, #8c52ff 50%, #5e23cc 100%);
+            color: #ffffff;
+        }
+
+        .gloss-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gloss-shine::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 40%;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 8px 8px 100% 100%;
+            pointer-events: none;
+        }
+
+        .sky-bg {
+            background: linear-gradient(180deg, #38ada9 0%, #78e08f 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(100vw); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: floatCloud 35s linear infinite;
+        }
+
+        .postage-stamp {
+            background-color: #fffdf0;
+            border: 4px dashed #ff3366;
+            outline: 4px solid #1e272e;
+            box-shadow: 4px 4px 0 #12181b;
+        }
+
+        @keyframes pixelPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        .pulse-anim {
+            animation: pixelPulse 2s infinite ease-in-out;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e272e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffcc00;
+            border: 2px solid #1e272e;
+        }
+
+        .sentence-tile {
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .sentence-tile:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Distinct High-Visibility Styling for Topic Selector */
+        .select-high-vis {
+            background-color: #fffae6 !important;
+            border: 4px solid #1e272e !important;
+            box-shadow: 0 4px 0 #1e272e, 0 0 12px rgba(255, 204, 0, 0.8);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-2 md:p-6 text-slate-900">
+
+    <div class="fixed inset-0 sky-bg -z-50 pointer-events-none overflow-hidden">
+        <div class="cloud top-8 w-32 h-10" style="animation-duration: 45s; animation-delay: -5s;"></div>
+        <div class="cloud top-24 w-48 h-12" style="animation-duration: 30s; animation-delay: -18s;"></div>
+        <div class="cloud top-1/2 w-40 h-10" style="animation-duration: 50s; animation-delay: -10s;"></div>
+    </div>
+
+    <!-- TOP CONTROL BAR -->
+    <header class="w-full max-w-5xl flex justify-between items-center mb-4 z-10 px-2">
+        <div class="flex items-center gap-2">
+            <button onclick="promptGoHome()" class="bg-yellow-400 border-4 border-slate-900 px-3 py-1.5 rounded-xl shadow-[4px_4px_0_#1e272e] flex items-center gap-2 font-pixel text-xs hover:bg-yellow-300 active:translate-y-1">
+                <i class="fa-solid fa-house text-slate-900"></i>
+                <span class="text-slate-900 uppercase">HOME</span>
+            </button>
+            <span id="currentRoleBadge" class="hidden md:inline-block bg-slate-800 text-yellow-300 font-pixel text-[10px] px-2.5 py-1.5 rounded-xl border-2 border-slate-900">
+                STUDENT MODE
+            </span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button id="soundToggleBtn" onclick="toggleSound()" class="bg-white border-4 border-slate-900 text-slate-900 px-3 py-1.5 rounded-xl font-pixel text-xs flex items-center gap-2 shadow-[3px_3px_0_#1e272e] active:translate-y-1">
+                <i id="soundIcon" class="fa-solid fa-volume-xmark text-slate-400"></i>
+                <span id="soundText" class="hidden md:inline">SOUND OFF</span>
+            </button>
+            <div class="bg-indigo-900 text-yellow-300 border-4 border-slate-900 px-4 py-1.5 rounded-xl font-pixel text-xs md:text-sm shadow-[3px_3px_0_#1e272e]">
+                SCORE: <span id="scoreDisplay">0000</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-5xl my-auto z-10">
+
+        <!-- SCREEN 0: LANDING / LOGIN SCREEN -->
+        <section id="screenLanding" class="airmail-frame rounded-2xl p-6 md:p-10 text-center relative max-w-2xl mx-auto my-4">
+            <div class="absolute -top-10 -right-6 hidden sm:block">
+                <div class="postage-stamp p-2 rotate-12 flex flex-col items-center">
+                    <i class="fa-solid fa-stamp text-3xl text-red-500"></i>
+                    <span class="font-pixel text-[9px] mt-1 text-slate-800">MALAYSIA</span>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <div class="inline-block bg-sky-400 text-white font-pixel text-xs px-3 py-1 rounded-full border-2 border-slate-900 mb-2 shadow-[2px_2px_0_#1e272e]">
+                    FORM 2 ENGLISH UASA WRITING
+                </div>
+                <h1 class="font-pixel text-3xl md:text-5xl text-red-500 tracking-wider my-3 text-stroke drop-shadow-[0_4px_0_#1e272e]">
+                    BUILD AN EMAIL!
+                </h1>
+            </div>
+
+            <div class="bg-yellow-50 border-4 border-slate-900 p-4 md:p-6 rounded-xl max-w-md mx-auto space-y-4 shadow-[4px_4px_0_#1e272e]">
+                
+                <div class="flex border-2 border-slate-900 rounded-lg overflow-hidden font-pixel text-[11px]">
+                    <button id="tabStudentRole" onclick="switchLoginRole('student')" class="w-1/2 py-2 bg-red-500 text-white font-bold border-r border-slate-900">
+                        STUDENT
+                    </button>
+                    <button id="tabTeacherRole" onclick="switchLoginRole('teacher')" class="w-1/2 py-2 bg-slate-200 text-slate-700 font-bold">
+                        TEACHER
+                    </button>
+                </div>
+
+                <!-- Student Login Fields -->
+                <div id="studentFormFields" class="space-y-3">
+                    <div>
+                        <label class="block font-pixel text-xs text-left text-slate-800 mb-1">SELECT YOUR CLASS</label>
+                        <select id="classSelect" class="w-full font-pixel text-xs p-3 border-4 border-slate-900 rounded-lg focus:outline-none uppercase bg-white cursor-pointer">
+                            <option value="2 SAKURA">2 SAKURA</option>
+                            <option value="2 AKASIA">2 AKASIA</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-pixel text-xs text-left text-slate-800 mb-1">STUDENT NAME</label>
+                        <input type="text" id="studentNameInput" placeholder="ENTER YOUR FULL NAME" class="w-full font-pixel text-xs p-3 border-4 border-slate-900 rounded-lg focus:outline-none">
+                    </div>
+
+                    <button onclick="startGame()" class="btn-arcade btn-red w-full font-pixel text-sm py-4 pulse-anim gloss-shine mt-2">
+                        PLAY GAME <i class="fa-solid fa-play ml-2"></i>
+                    </button>
+                </div>
+
+                <!-- Teacher Login Fields (Passcode Hidden) -->
+                <div id="teacherFormFields" class="space-y-3 hidden">
+                    <div>
+                        <label class="block font-pixel text-xs text-left text-slate-800 mb-1">TEACHER PASSCODE</label>
+                        <input type="password" id="teacherPinInput" placeholder="ENTER PASSCODE" class="w-full font-pixel text-xs p-3 border-4 border-slate-900 rounded-lg focus:outline-none">
+                    </div>
+
+                    <button onclick="loginAsTeacher()" class="btn-arcade btn-purple w-full font-pixel text-sm py-4 gloss-shine mt-2">
+                        ENTER TEACHER DASHBOARD <i class="fa-solid fa-lock-open ml-2"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-3 mt-6">
+                <button onclick="openHowToPlayModal()" class="btn-arcade btn-yellow text-xs py-2 px-4 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> HOW TO PLAY
+                </button>
+                <button onclick="openScoreboardModal()" class="btn-arcade btn-blue text-xs py-2 px-4 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> CLASS SCOREBOARD
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 1: FORMULA NOTES -->
+        <section id="screenSection1" class="hidden space-y-4">
+            <div class="bg-yellow-400 border-4 border-slate-900 p-4 rounded-2xl shadow-[6px_6px_0_#1e272e] flex flex-col md:flex-row justify-between items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-red-500 text-white font-pixel text-lg px-3 py-1 border-2 border-slate-900 rounded-lg">PART 1</div>
+                    <div>
+                        <h2 class="font-pixel text-base md:text-lg text-slate-900">THE G.R.E.A.T. FORMULA</h2>
+                        <p class="text-xs text-slate-800 font-bold">Master the 5 essential steps to writing a Form 2 email reply!</p>
+                    </div>
+                </div>
+                <button onclick="navToSection(2)" class="btn-arcade btn-green text-xs whitespace-nowrap">
+                    GO TO PART 2: EXPLORE & PUZZLE <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                <div class="bg-rose-100 border-4 border-slate-900 p-3 rounded-xl shadow-[4px_4px_0_#1e272e]">
+                    <span class="bg-red-500 text-white font-pixel text-xl px-2 py-0.5 rounded border border-slate-900">G</span>
+                    <h3 class="font-pixel text-xs text-red-600 mt-2 mb-1">GREET</h3>
+                    <p class="text-xs text-slate-800 font-bold">Hi + name</p>
+                    <div class="mt-2 bg-white p-2 rounded border border-slate-400 text-[11px] font-mono">"Hi Alex," / "Hello Maya,"</div>
+                </div>
+
+                <div class="bg-amber-100 border-4 border-slate-900 p-3 rounded-xl shadow-[4px_4px_0_#1e272e]">
+                    <span class="bg-amber-500 text-white font-pixel text-xl px-2 py-0.5 rounded border border-slate-900">R</span>
+                    <h3 class="font-pixel text-xs text-amber-700 mt-2 mb-1">RESPOND</h3>
+                    <p class="text-xs text-slate-800 font-bold">Reply + state choice</p>
+                    <div class="mt-2 bg-white p-2 rounded border border-slate-400 text-[11px] font-mono">"Thanks for asking me. I think you should..."</div>
+                </div>
+
+                <div class="bg-emerald-100 border-4 border-slate-900 p-3 rounded-xl shadow-[4px_4px_0_#1e272e]">
+                    <span class="bg-green-600 text-white font-pixel text-xl px-2 py-0.5 rounded border border-slate-900">E</span>
+                    <h3 class="font-pixel text-xs text-green-700 mt-2 mb-1">EXPLAIN</h3>
+                    <p class="text-xs text-slate-800 font-bold">Give reasons with details</p>
+                    <div class="mt-2 bg-white p-2 rounded border border-slate-400 text-[11px] font-mono">"First,... Also,... Another reason is..."</div>
+                </div>
+
+                <div class="bg-sky-100 border-4 border-slate-900 p-3 rounded-xl shadow-[4px_4px_0_#1e272e]">
+                    <span class="bg-blue-500 text-white font-pixel text-xl px-2 py-0.5 rounded border border-slate-900">A</span>
+                    <h3 class="font-pixel text-xs text-blue-700 mt-2 mb-1">ALL DONE</h3>
+                    <p class="text-xs text-slate-800 font-bold">Hope + ask for reply</p>
+                    <div class="mt-2 bg-white p-2 rounded border border-slate-400 text-[11px] font-mono">"I hope this helps. Write back soon."</div>
+                </div>
+
+                <div class="bg-purple-100 border-4 border-slate-900 p-3 rounded-xl shadow-[4px_4px_0_#1e272e]">
+                    <span class="bg-purple-600 text-white font-pixel text-xl px-2 py-0.5 rounded border border-slate-900">T</span>
+                    <h3 class="font-pixel text-xs text-purple-700 mt-2 mb-1">TAKE LEAVE</h3>
+                    <p class="text-xs text-slate-800 font-bold">Line-by-line closing</p>
+                    <div class="mt-2 bg-white p-2 rounded border border-slate-400 text-[11px] font-mono font-semibold text-purple-900">
+                        Bye!<br>Regards,<br>[Name]
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border-4 border-slate-900 rounded-2xl p-4 shadow-[6px_6px_0_#1e272e]">
+                <h3 class="font-pixel text-xs md:text-sm text-slate-900 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark text-red-500"></i> HELPFUL PHRASES FOR FORM 2 EMAIL REPLIES
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div class="bg-white p-3 rounded-xl border-2 border-slate-900">
+                        <span class="font-pixel text-[10px] text-amber-600 block mb-1">1. RESPONDING</span>
+                        <ul class="list-disc list-inside space-y-1 font-medium text-slate-700">
+                            <li>Thanks for asking me.</li>
+                            <li>Great to hear from you!</li>
+                            <li>I'm happy to help you out.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border-2 border-slate-900">
+                        <span class="font-pixel text-[10px] text-blue-600 block mb-1">2. CHOOSING / ADVISING</span>
+                        <ul class="list-disc list-inside space-y-1 font-medium text-slate-700">
+                            <li>I think you should ...</li>
+                            <li>In my opinion, you should ...</li>
+                            <li>My recommendation is ...</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border-2 border-slate-900">
+                        <span class="font-pixel text-[10px] text-green-600 block mb-1">3. REASONS & ELABORATION</span>
+                        <ul class="list-disc list-inside space-y-1 font-medium text-slate-700">
+                            <li>First, [Reason 1] + [Elaboration]</li>
+                            <li>Also, [Reason 2] + [Example]</li>
+                            <li>Another reason is [Reason 3] + [Detail]</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: EXPLORING TOPICS & MIX-UP PUZZLE (HOTs PRACTICE) -->
+        <section id="screenSection2" class="hidden space-y-4">
+            <div class="bg-blue-500 border-4 border-slate-900 p-4 rounded-2xl shadow-[6px_6px_0_#1e272e] flex flex-col md:flex-row justify-between items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-yellow-400 text-slate-900 font-pixel text-lg px-3 py-1 border-2 border-slate-900 rounded-lg">PART 2</div>
+                    <div>
+                        <h2 class="font-pixel text-base md:text-lg text-white drop-shadow-[0_2px_0_#1e272e]">EXPLORING EMAIL TOPICS & PUZZLES</h2>
+                        <p class="text-xs text-blue-100 font-bold">Analyze the sentences and reorder them into G.R.E.A.T. sequence!</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="navToSection(1)" class="btn-arcade btn-yellow text-xs">
+                        <i class="fa-solid fa-backward"></i> NOTES
+                    </button>
+                    <button onclick="checkPart2CompletionAndNav()" class="btn-arcade btn-green text-xs">
+                        PART 3: WRITE <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white border-4 border-slate-900 rounded-2xl p-4 shadow-[6px_6px_0_#1e272e]">
+                <h3 class="font-pixel text-xs text-slate-900 mb-3 flex items-center justify-between">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-amber-500"></i> SELECT A TOPIC TO PRACTICE</span>
+                    <span id="topicPracticeStatus" class="font-pixel text-[10px] text-green-600 bg-green-100 px-2 py-0.5 rounded border border-green-600">0/7 COMPLETED</span>
+                </h3>
+                <div class="flex flex-wrap gap-2" id="topicTabsContainerSection2">
+                    <!-- Dynamic topic tabs -->
+                </div>
+            </div>
+
+            <div class="bg-yellow-100 border-4 border-slate-900 p-4 rounded-xl shadow-[4px_4px_0_#1e272e]">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="font-pixel text-xs bg-red-500 text-white px-2 py-0.5 rounded border border-slate-900 uppercase" id="mixupTopicBadge">Topic</span>
+                    <span class="text-xs text-slate-800 font-bold" id="mixupPromptText">Loading topic...</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Jumbled Sentence Pool -->
+                <div class="bg-slate-100 border-4 border-slate-900 rounded-2xl p-4 shadow-[4px_4px_0_#1e272e]">
+                    <h3 class="font-pixel text-xs text-slate-800 mb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-cubes text-blue-500"></i> MIXED SENTENCES</span>
+                        <span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded border border-slate-400">Click tile to add</span>
+                    </h3>
+                    <div id="scrambledPool" class="space-y-2 min-h-[300px]">
+                        <!-- Dynamic sentence tiles -->
+                    </div>
+                </div>
+
+                <!-- Target Draft Box -->
+                <div class="bg-white border-4 border-slate-900 rounded-2xl p-4 shadow-[4px_4px_0_#1e272e] flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-pixel text-xs text-slate-800 mb-2 flex items-center justify-between">
+                            <span><i class="fa-solid fa-envelope-open-text text-green-500"></i> YOUR ORDERED EMAIL</span>
+                            <span id="placedCount" class="font-pixel text-[10px] text-indigo-700">0 / 7 PLACED</span>
+                        </h3>
+                        <div id="assembledDraft" class="space-y-2 min-h-[260px] bg-yellow-50 border-2 border-dashed border-slate-400 rounded-xl p-3 font-mono">
+                            <p id="emptyDraftPlaceholder" class="text-slate-400 text-xs italic text-center py-10 font-sans">
+                                Click on sentence tiles on the left to stack them here in logical order:<br>
+                                Greet → Respond → Reasons → All done → Take leave
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex flex-wrap gap-2 justify-between items-center pt-2 border-t-2 border-slate-200">
+                        <button onclick="resetPuzzle()" class="btn-arcade btn-yellow text-xs px-3 py-2">
+                            <i class="fa-solid fa-rotate-left"></i> RESET
+                        </button>
+                        <button onclick="checkPuzzleAnswer()" class="btn-arcade btn-green text-xs px-5 py-2">
+                            CHECK & GET +150 PTS <i class="fa-solid fa-circle-check ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: INDEPENDENT WRITING STUDIO -->
+        <section id="screenSection3" class="hidden space-y-4">
+            <div class="bg-red-500 border-4 border-slate-900 p-4 rounded-2xl shadow-[6px_6px_0_#1e272e] flex flex-col md:flex-row justify-between items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="bg-yellow-400 text-slate-900 font-pixel text-lg px-3 py-1 border-2 border-slate-900 rounded-lg">PART 3</div>
+                    <div>
+                        <h2 class="font-pixel text-base md:text-lg text-white drop-shadow-[0_2px_0_#1e272e]">INDEPENDENT WRITING STUDIO</h2>
+                        <p class="text-xs text-red-100 font-bold">Choose a scenario and write your own original email reply!</p>
+                    </div>
+                </div>
+                <button onclick="navToSection(2)" class="btn-arcade btn-yellow text-xs">
+                    <i class="fa-solid fa-backward"></i> BACK TO PUZZLE
+                </button>
+            </div>
+
+            <!-- Enhanced Visibility Topic Dropdown -->
+            <div class="bg-yellow-50 border-4 border-slate-900 p-4 rounded-2xl shadow-[4px_4px_0_#1e272e] space-y-3">
+                <div class="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                    <div class="space-y-1 flex-1 w-full">
+                        <label class="font-pixel text-xs text-slate-900 block flex items-center gap-2">
+                            <i class="fa-solid fa-hand-pointer text-red-500 animate-bounce"></i> SELECT DESIRED TOPIC TASK:
+                        </label>
+                        <select id="writingTopicSelect" onchange="loadIndependentPrompt()" class="select-high-vis w-full font-pixel text-xs p-3.5 rounded-xl text-slate-900 focus:outline-none cursor-pointer">
+                            <option value="0">Task 1: Helping a stressed friend plan a calm weekend</option>
+                            <option value="1">Task 2: Suggesting an after-school club for a new classmate</option>
+                            <option value="2">Task 3: Recommending a venue for a family reunion dinner</option>
+                            <option value="3">Task 4: Advising a cousin on preparing for final exams</option>
+                            <option value="4">Task 5: Giving tips on organizing a school recycling campaign</option>
+                            <option value="5">Task 6: Recommending a holiday destination in Malaysia</option>
+                            <option value="6">Task 7: Suggesting a healthy lunch menu for the school canteen</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-slate-900 p-3.5 rounded-xl text-xs text-slate-800 space-y-1">
+                    <span class="font-pixel text-[11px] text-red-600 uppercase block font-bold">WRITE A REPLY:</span>
+                    <p id="promptInstructionsText" class="font-medium leading-relaxed">Loading task details...</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="bg-white border-4 border-slate-900 rounded-2xl p-4 shadow-[4px_4px_0_#1e272e]">
+                        <div class="bg-slate-100 border-2 border-slate-900 p-2.5 rounded-xl text-xs space-y-1.5 mb-3 font-mono">
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-500 w-16 font-bold">To:</span>
+                                <span id="recipientEmailDisplay" class="bg-white px-2 py-0.5 rounded border border-slate-300 w-full text-slate-800">friend@schoolmail.com</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-500 w-16 font-bold">Subject:</span>
+                                <input type="text" id="emailSubjectInput" placeholder="Enter subject line..." class="w-full bg-white px-2 py-0.5 rounded border border-slate-300 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <textarea id="emailBodyTextarea" oninput="updateWordCount()" rows="11" placeholder="Write your email here... Remember to write Take Leave line-by-line:&#10;Bye!&#10;Regards,&#10;[Your Name]" class="w-full p-3 border-4 border-slate-900 rounded-xl font-mono text-xs md:text-sm focus:outline-none focus:bg-yellow-50 leading-relaxed resize-y"></textarea>
+
+                        <div class="flex flex-wrap justify-between items-center mt-3 pt-2 border-t-2 border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="font-pixel text-xs text-slate-800">WORD COUNT:</span>
+                                <span id="wordCounterBadge" class="font-pixel text-xs px-3 py-1 rounded-lg border-2 border-slate-900 bg-green-500 text-white">0 / 70 words</span>
+                            </div>
+                            <span class="text-[11px] text-slate-500 font-semibold">(Target: ~70 words. Max limit: 120 words)</span>
+                        </div>
+                    </div>
+
+                    <!-- Helper Chips with Subtitle -->
+                    <div class="bg-sky-50 border-4 border-slate-900 rounded-2xl p-4 shadow-[4px_4px_0_#1e272e]">
+                        <h4 class="font-pixel text-xs text-slate-800 mb-0.5 flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles text-sky-600"></i> SENTENCE STARTERS & HELPER CHIPS
+                        </h4>
+                        <p class="text-[11px] text-slate-600 font-bold mb-2.5">
+                            (Optional: You are not required to use them, but click any chip for help or inspiration!)
+                        </p>
+                        <div class="flex flex-wrap gap-2" id="sentenceStartersBank">
+                            <!-- Dynamic helper chips -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-emerald-50 border-4 border-slate-900 rounded-2xl p-4 shadow-[4px_4px_0_#1e272e]">
+                        <h4 class="font-pixel text-xs text-slate-800 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-green-600"></i> SUGGESTED VOCABULARY
+                        </h4>
+                        <div class="flex flex-wrap gap-1.5" id="topicVocabChips">
+                            <!-- Dynamic vocab chips -->
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border-4 border-slate-900 rounded-2xl p-4 shadow-[4px_4px_0_#1e272e]">
+                        <h4 class="font-pixel text-xs text-slate-800 mb-2">G.R.E.A.T. CHECKLIST</h4>
+                        <ul class="text-xs space-y-1.5 font-semibold">
+                            <li id="chkG" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>G - Greet (Hi + name)</span></li>
+                            <li id="chkR" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>R - Respond (State choice)</span></li>
+                            <li id="chkE1" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>E - Reason 1 + Elaboration</span></li>
+                            <li id="chkE2" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>E - Reason 2 + Example</span></li>
+                            <li id="chkE3" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>E - Reason 3 + Detail</span></li>
+                            <li id="chkA" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>A - All done (Hope + ask reply)</span></li>
+                            <li id="chkT" class="flex items-center gap-2 text-slate-400"><i class="fa-regular fa-square"></i> <span>T - Take leave (Bye! / Regards, / Name)</span></li>
+                        </ul>
+                    </div>
+
+                    <button onclick="submitIndependentEmail()" class="btn-arcade btn-green w-full font-pixel text-sm py-4 shadow-[4px_4px_0_#1e272e] pulse-anim">
+                        SUBMIT EMAIL <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full max-w-5xl mt-6 mb-2 text-center text-xs font-pixel text-slate-800">
+        <p>BUILD AN EMAIL! • FORM 2 ENGLISH LEARNING ARCADE</p>
+    </footer>
+
+    <!-- MODAL 1: HOW TO PLAY -->
+    <div id="howToPlayModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-4 border-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-[8px_8px_0_#1e272e] relative">
+            <button onclick="closeModal('howToPlayModal')" class="absolute top-3 right-3 text-slate-800 hover:text-red-500 font-pixel text-lg">✕</button>
+            <h3 class="font-pixel text-sm md:text-base text-red-500 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-circle-info"></i> HOW TO PLAY
+            </h3>
+            <div class="space-y-3 text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
+                <p><strong>Part 1 (Formula):</strong> Learn the G.R.E.A.T. steps (Greet, Respond, Explain reasons, All done, Take leave line-by-line).</p>
+                <p><strong>Part 2 (Explore & Puzzle):</strong> Analyze sentences for clues and reorder mixed blocks for all 7 topics to gain arcade points.</p>
+                <p><strong>Part 3 (Independent Writing):</strong> Pick a topic, write your own original email (~70 words, max 120 words), and submit for teacher evaluation!</p>
+            </div>
+            <div class="mt-6 text-center">
+                <button onclick="closeModal('howToPlayModal')" class="btn-arcade btn-yellow text-xs px-6 py-2">GOT IT!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: HOME PROMPT REMINDER -->
+    <div id="homePromptModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-yellow-50 border-4 border-slate-900 rounded-2xl max-w-md w-full p-6 shadow-[8px_8px_0_#1e272e] text-center relative">
+            <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-2"></i>
+            <h3 class="font-pixel text-sm text-slate-900 mb-2">RETURN TO HOME SCREEN?</h3>
+            <p class="text-xs text-slate-700 font-bold mb-5 leading-relaxed">
+                ⚠️ WARNING: Returning to the home screen will reset your current unsaved session progress! Are you sure?
+            </p>
+            <div class="flex justify-center gap-3">
+                <button onclick="confirmGoHome()" class="btn-arcade btn-red text-xs px-4 py-2">YES, RESET</button>
+                <button onclick="closeModal('homePromptModal')" class="btn-arcade btn-yellow text-xs px-4 py-2">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: SCOREBOARD REMINDER BEFORE PART 3 -->
+    <div id="part2IncompleteModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-yellow-50 border-4 border-slate-900 rounded-2xl max-w-md w-full p-6 shadow-[8px_8px_0_#1e272e] text-center relative">
+            <i class="fa-solid fa-trophy text-4xl text-yellow-500 mb-2 animate-bounce"></i>
+            <h3 class="font-pixel text-sm text-slate-900 mb-2">EARN MORE POINTS!</h3>
+            <p class="text-xs text-slate-700 font-bold mb-4 leading-relaxed">
+                You haven't completed all 7 topic puzzles in Part 2 yet! Complete them to earn bonus arcade points and climb to the top of your class scoreboard!
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-2">
+                <button onclick="closeModal('part2IncompleteModal')" class="btn-arcade btn-yellow text-xs px-4 py-2">
+                    <i class="fa-solid fa-gamepad"></i> PRACTICE MORE
+                </button>
+                <button onclick="confirmMoveToSection3()" class="btn-arcade btn-blue text-xs px-4 py-2">
+                    CONTINUE TO PART 3 <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: CLASS SCOREBOARD WITH CLOSE EXIT BUTTON -->
+    <div id="scoreboardModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-4 border-slate-900 rounded-2xl max-w-md w-full p-6 shadow-[8px_8px_0_#1e272e] relative">
+            <!-- Close Exit Button Top Right -->
+            <button onclick="closeScoreboardAndExit()" class="absolute top-3 right-3 bg-red-500 text-white font-pixel text-xs px-2.5 py-1 rounded-lg border-2 border-slate-900 shadow-[2px_2px_0_#1e272e] hover:bg-red-600 active:translate-y-0.5">
+                ✕ CLOSE
+            </button>
+            
+            <h3 class="font-pixel text-sm text-indigo-700 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-yellow-500"></i> CLASS SCOREBOARD
+            </h3>
+            <p class="text-[11px] font-pixel text-slate-600 mb-4" id="scoreboardClassHeader">CLASS: 2 SAKURA</p>
+            
+            <div class="border-2 border-slate-900 rounded-xl overflow-hidden bg-slate-50 max-h-60 overflow-y-auto">
+                <table class="w-full text-xs text-left font-mono">
+                    <thead class="bg-indigo-900 text-yellow-300 font-pixel text-[10px]">
+                        <tr>
+                            <th class="p-2">#</th>
+                            <th class="p-2">NAME</th>
+                            <th class="p-2 text-right">SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreboardTableBody">
+                        <!-- Class records loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button onclick="closeScoreboardAndExit()" class="btn-arcade btn-yellow text-xs px-5 py-2">EXIT GAME</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: TEACHER DASHBOARD & MARKING PORTAL -->
+    <div id="teacherDashboardModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white border-4 border-slate-900 rounded-2xl max-w-3xl w-full p-6 shadow-[8px_8px_0_#1e272e] relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('teacherDashboardModal')" class="absolute top-3 right-3 text-slate-800 hover:text-red-500 font-pixel text-lg">✕</button>
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b-2 border-slate-200 pb-3 mb-4">
+                <div>
+                    <h3 class="font-pixel text-sm text-purple-700 flex items-center gap-2">
+                        <i class="fa-solid fa-chalkboard-user"></i> TEACHER RECORDS & MARKING PORTAL
+                    </h3>
+                    <p class="text-xs text-slate-600 font-bold">Review student emails, assign grades, and save to school records.</p>
+                </div>
+                <button onclick="exportRecordsToCSV()" class="btn-arcade btn-green text-[10px] py-2 px-3">
+                    <i class="fa-solid fa-file-excel mr-1"></i> EXPORT TO SPREADSHEET
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="border-2 border-slate-900 rounded-xl overflow-hidden bg-slate-50">
+                    <table class="w-full text-xs text-left font-mono">
+                        <thead class="bg-slate-800 text-white font-pixel text-[10px]">
+                            <tr>
+                                <th class="p-2">STUDENT</th>
+                                <th class="p-2">CLASS</th>
+                                <th class="p-2">SCORE</th>
+                                <th class="p-2">WORDS</th>
+                                <th class="p-2">GRADE/MARK</th>
+                                <th class="p-2 text-right">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherSubmissionsTableBody">
+                            <!-- Dynamic records with 'MARKED' status button -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="teacherMarkingPanel" class="hidden bg-yellow-50 border-2 border-slate-900 p-4 rounded-xl space-y-3 font-mono">
+                    <h4 class="font-pixel text-xs text-slate-900 border-b border-slate-300 pb-1 flex justify-between">
+                        <span>MARKING SUBMISSION: <span id="markingStudentName">-</span></span>
+                        <span id="markingClassBadge" class="bg-slate-800 text-yellow-300 px-2 py-0.5 rounded text-[10px]">2 SAKURA</span>
+                    </h4>
+
+                    <div class="bg-white p-3 rounded border border-slate-300 text-xs text-slate-800 whitespace-pre-wrap max-h-40 overflow-y-auto" id="markingEmailBodyText">
+                        <!-- Email content -->
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-pixel text-[10px] text-slate-700 mb-1">TEACHER GRADE / MARK</label>
+                            <select id="teacherGradeSelect" class="w-full p-2 border-2 border-slate-900 rounded text-xs bg-white font-bold">
+                                <option value="A (Excellent)">A (Excellent G.R.E.A.T. structure)</option>
+                                <option value="B (Good)">B (Good - Minor grammar fixes needed)</option>
+                                <option value="C (Satisfactory)">C (Satisfactory - Missing some reasons)</option>
+                                <option value="Needs Revision">Needs Revision</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-pixel text-[10px] text-slate-700 mb-1">REMARKS & FEEDBACK</label>
+                            <input type="text" id="teacherFeedbackInput" placeholder="Enter encouragement or notes..." class="w-full p-2 border-2 border-slate-900 rounded text-xs">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-2 pt-2">
+                        <button onclick="saveTeacherMarking()" class="btn-arcade btn-purple text-xs px-4 py-2">
+                            SAVE MARKING & RECORD
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 6: FINAL EVALUATION & UPDATED EXIT/SCOREBOARD NAVIGATION -->
+    <div id="evaluationModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-yellow-50 border-4 border-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-[8px_8px_0_#1e272e] text-center relative">
+            <div class="postage-stamp inline-block p-3 mb-2">
+                <i class="fa-solid fa-award text-4xl text-amber-500"></i>
+            </div>
+            <h3 class="font-pixel text-base text-green-600 mb-1">EMAIL SUBMITTED!</h3>
+            <p id="evalScoreText" class="font-pixel text-xs text-slate-800 mb-3">+500 ARCADE POINTS!</p>
+            
+            <div id="evalFeedbackBox" class="bg-white border-2 border-slate-900 p-3 rounded-xl text-left text-xs text-slate-700 space-y-1.5 mb-4 font-mono">
+                <!-- Submission summary -->
+            </div>
+
+            <div class="flex justify-center gap-3">
+                <button onclick="exitGameToHome()" class="btn-arcade btn-red text-xs px-4 py-2">EXIT</button>
+                <button onclick="openScoreboardFromEval()" class="btn-arcade btn-blue text-xs px-4 py-2">SCOREBOARD</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* -------------------------------------------------------------------------- */
+        /* TOPICS DATA (PART 2 CLEANED HOTs SENTENCES & PART 3 UNGUIDED TASKS)        */
+        /* -------------------------------------------------------------------------- */
+        const TOPICS_DATA = [
+            {
+                id: "selfcare",
+                title: "Self-Care Routine",
+                icon: "fa-heart-pulse",
+                part2Prompt: "Your classmate Alex wants advice on starting a healthy daily self-care routine.",
+                part3Prompt: "Your friend Danial is feeling stressed with homework and exam preparation. Write an email recommending relaxing self-care activities for his weekend.",
+                recipient: "alex@schoolmail.com",
+                subject: "Self-care Advice for You!",
+                vocab: ["meditation", "hydration", "adequate sleep", "balanced diet", "screen-time limit", "stretching"],
+                starters: ["Hi Alex,", "Thanks for asking me. I think you should...", "First, drink plenty of water every day.", "Next, try sleeping early.", "Moreover, light stretching keeps muscles relaxed.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hi Alex," },
+                    { tag: "R", text: "Thanks for asking me. I think you should follow a simple self-care routine." },
+                    { tag: "E1", text: "First, drink 8 glasses of water daily. Staying hydrated boosts your energy during classes." },
+                    { tag: "E2", text: "Next, sleep before 10 PM every night. Proper rest improves your focus during morning lessons." },
+                    { tag: "E3", text: "Moreover, do light morning stretching. Gentle movement keeps your muscles relaxed and flexible." },
+                    { tag: "A", text: "I hope this helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nLee" }
+                ]
+            },
+            {
+                id: "sportsday",
+                title: "Sports Day Event",
+                icon: "fa-trophy",
+                part2Prompt: "Your friend Kavita asked which Sports Day event you should join together.",
+                part3Prompt: "A new classmate wants to join an extra-curricular sport or club with you after school. Write an email giving reasons why your choice is the best.",
+                recipient: "kavita@schoolmail.com",
+                subject: "Sports Day Choice",
+                vocab: ["marching band", "relay race", "cheerleading", "track event", "practice session", "house points"],
+                starters: ["Hi Kavita,", "Great to hear from you. My choice is...", "First, running in a team builds teamwork.", "Next, we can practice on the field.", "Finally, winning earns 50 house points.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hi Kavita," },
+                    { tag: "R", text: "Great to hear from you. My choice is joining the 4x100m relay race for Yellow House." },
+                    { tag: "E1", text: "First, running in a team builds great teamwork. Passing the baton requires good coordination." },
+                    { tag: "E2", text: "Next, we have an easy training schedule. We can practice together on the school field after class." },
+                    { tag: "E3", text: "Finally, it offers high winning bonus points. Winning first place earns 50 extra points for our house." },
+                    { tag: "A", text: "I hope this helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nMaya" }
+                ]
+            },
+            {
+                id: "birthday",
+                title: "Birthday Present",
+                icon: "fa-gift",
+                part2Prompt: "Jason asked for suggestions on what birthday gift to buy for Danial.",
+                part3Prompt: "Your family is organizing a grand reunion dinner for your grandparents. Write an email suggesting a suitable restaurant or venue with reasons.",
+                recipient: "jason@schoolmail.com",
+                subject: "Gift Idea for Danial",
+                vocab: ["novel", "gift voucher", "wireless headphones", "art kit", "split cost", "practical"],
+                starters: ["Hello Jason,", "I'm happy to help. In my opinion, you should buy...", "First, wireless headphones are useful for studying.", "In addition, they feature long battery life.", "Lastly, we can split the cost evenly.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hello Jason," },
+                    { tag: "R", text: "I'm happy to help. In my opinion, you should buy Danial wireless headphones." },
+                    { tag: "E1", text: "First, they have high usability for studying. He loves listening to instrumental music while doing homework." },
+                    { tag: "E2", text: "In addition, they feature long battery endurance. A single charge lasts up to twenty hours of continuous playback." },
+                    { tag: "E3", text: "Lastly, it is cost-effective for us. Five of us can split the price evenly so it is affordable." },
+                    { tag: "A", text: "I hope my suggestion helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nDanial" }
+                ]
+            },
+            {
+                id: "competition",
+                title: "School Competition",
+                icon: "fa-medal",
+                part2Prompt: "Mei Ling asked whether you should join the Public Speaking Contest.",
+                part3Prompt: "Your cousin wants advice on how to study effectively for the upcoming mid-year exams. Write an email offering practical study tips.",
+                recipient: "meiling@schoolmail.com",
+                subject: "Public Speaking Contest Choice",
+                vocab: ["confidence", "stage presence", "certificate", "trophy", "script practice", "merit marks"],
+                starters: ["Hi Mei Ling,", "Thanks for asking me. I think we should...", "First, it boosts self-confidence on stage.", "Next, we can practice scripts together.", "Moreover, every contestant receives a certificate.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hi Mei Ling," },
+                    { tag: "R", text: "Thanks for asking me. I think we should definitely enter the Public Speaking Contest!" },
+                    { tag: "E1", text: "First, it boosts self-confidence. Speaking on stage helps overcome stage fright effectively." },
+                    { tag: "E2", text: "Next, we can provide mutual learning support. We can proofread and memorize our scripts during recess." },
+                    { tag: "E3", text: "Moreover, it offers official recognition. Every contestant receives a state-level certificate." },
+                    { tag: "A", text: "I hope this helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nAmir" }
+                ]
+            },
+            {
+                id: "socialmedia",
+                title: "Social Media Usage",
+                icon: "fa-hashtag",
+                part2Prompt: "Haikal asked for advice on how to use social media safely.",
+                part3Prompt: "Your school club is organizing a Go Green Recycling Campaign. Write an email to your club president giving ideas to attract student involvement.",
+                recipient: "haikal@schoolmail.com",
+                subject: "Safe Social Media Tips",
+                vocab: ["privacy settings", "cyberbullying", "strong password", "respectful comments", "screen time"],
+                starters: ["Hi Haikal,", "Great to hear from you. In my opinion, you should...", "First, set your account to private.", "Furthermore, create a strong password.", "Finally, post respectful comments to avoid cyberbullying.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hi Haikal," },
+                    { tag: "R", text: "Great to hear from you. In my opinion, you should follow strict safety rules online." },
+                    { tag: "E1", text: "First, protect your personal privacy. Set your account to private so strangers cannot view your photos." },
+                    { tag: "E2", text: "Furthermore, ensure secure account authentication. Create complex passwords combining numbers and special characters." },
+                    { tag: "E3", text: "Finally, maintain a positive digital footprint. Always post respectful comments to avoid cyberbullying issues." },
+                    { tag: "A", text: "I hope this helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nSaran" }
+                ]
+            },
+            {
+                id: "transport",
+                title: "Public Transport",
+                icon: "fa-bus",
+                part2Prompt: "Saran asked how to commute to the shopping mall using public transport.",
+                part3Prompt: "A pen pal from overseas is visiting Malaysia. Write an email recommending a memorable holiday destination in Malaysia with reasons.",
+                recipient: "saran@schoolmail.com",
+                subject: "Transport Advice to Mall",
+                vocab: ["LRT station", "bus stop", "Touch 'n Go card", "interchange", "feeder bus", "affordable"],
+                starters: ["Hello Saran,", "I'm happy to help. My choice is taking the LRT...", "First, the LRT station is near your house.", "Next, feeder buses drop off right at the entrance.", "Lastly, student card gives a 50% fare discount.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hello Saran," },
+                    { tag: "R", text: "I'm happy to help. My choice is taking the LRT train and feeder bus to the mall." },
+                    { tag: "E1", text: "First, it has a convenient station location. The LRT station is just five minutes walk from your house." },
+                    { tag: "E2", text: "Next, it provides a direct drop-off point. Feeder buses stop directly in front of the shopping mall entrance." },
+                    { tag: "E3", text: "Lastly, it offers a fast and economical fare. Using a student Touch 'n Go card gives a 50% discount on fare." },
+                    { tag: "A", text: "I hope this helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nLucas" }
+                ]
+            },
+            {
+                id: "hobbies",
+                title: "Fun Hobbies",
+                icon: "fa-gamepad",
+                part2Prompt: "Lucas asked what new hobby you recommend trying together this weekend.",
+                part3Prompt: "The school principal wants student suggestions to improve the canteen menu. Write an email suggesting healthy and tasty food options.",
+                recipient: "lucas@schoolmail.com",
+                subject: "Weekend Hobby Idea",
+                vocab: ["gardening", "sketching", "badminton", "baking", "relaxation", "creativity"],
+                starters: ["Hi Lucas,", "Thanks for asking me. I think you should try...", "First, following recipes builds cooking skills.", "In addition, kneading dough helps reduce study stress.", "Finally, you get to share treats with your family.", "I hope this helps. Write back soon.", "Bye!", "Regards,"],
+                sampleEmailBlocks: [
+                    { tag: "G", text: "Hi Lucas," },
+                    { tag: "R", text: "Thanks for asking me. I think you should try baking cookies as a weekend hobby!" },
+                    { tag: "E1", text: "First, it offers easy step-by-step learning. Following simple online recipes builds basic cooking skills." },
+                    { tag: "E2", text: "In addition, it provides effective stress relief. Kneading dough and decorating cookies helps unwind after studies." },
+                    { tag: "E3", text: "Finally, it delights family members. You get to share delicious freshly baked treats with everyone at home." },
+                    { tag: "A", text: "I hope this helps. Write back soon." },
+                    { tag: "T", text: "Bye!\nRegards,\nHannah" }
+                ]
+            }
+        ];
+
+        /* -------------------------------------------------------------------------- */
+        /* GLOBAL GAME STATE & LOCAL RECORDS STORE                                    */
+        /* -------------------------------------------------------------------------- */
+        let gameState = {
+            soundEnabled: false,
+            score: 0,
+            studentClass: "2 SAKURA",
+            studentName: "",
+            role: "student",
+            currentSection: 0,
+            puzzleCurrentTopic: 0,
+            puzzlePlacedSentences: [],
+            puzzleScrambledSentences: [],
+            completedTopicsPart2: new Set()
+        };
+
+        // Persistent Class Records Store
+        let classDatabase = JSON.parse(localStorage.getItem('build_email_records')) || [
+            { name: "Ahmad Danish", className: "2 SAKURA", score: 650, words: 68, grade: "A (Excellent)", feedback: "Great use of G.R.E.A.T formula!", body: "Hi Alex,\nThanks for asking me...", isMarked: true },
+            { name: "Siti Nurhaliza", className: "2 SAKURA", score: 500, words: 71, grade: "Pending", feedback: "", body: "Hi Alex,\nI think you should...", isMarked: false },
+            { name: "Chong Wei", className: "2 AKASIA", score: 550, words: 74, grade: "B (Good)", feedback: "Well written, line-by-line closing included.", body: "Hello Jason,\nIn my opinion...", isMarked: true }
+        ];
+
+        function saveDatabase() {
+            localStorage.setItem('build_email_records', JSON.stringify(classDatabase));
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* AUDIO SYNTH ENGINE                                                         */
+        /* -------------------------------------------------------------------------- */
+        let bgmSynth = null;
+        let bgmLoop = null;
+
+        function initBGM() {
+            if (bgmSynth) return;
+            bgmSynth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: "square" },
+                envelope: { attack: 0.02, decay: 0.1, sustain: 0.2, release: 0.4 }
+            }).toDestination();
+            bgmSynth.volume.value = -18;
+
+            const notes = ["C4", "E4", "G4", "B4", "C5", "G4", "E4", "G4", "A4", "C5", "E5", "A4", "F4", "A4", "C5", "F5"];
+            let step = 0;
+
+            bgmLoop = new Tone.Loop(time => {
+                bgmSynth.triggerAttackRelease(notes[step % notes.length], "16n", time);
+                step++;
+            }, "8n");
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+
+            if (gameState.soundEnabled) {
+                Tone.start();
+                initBGM();
+                Tone.Transport.start();
+                bgmLoop.start(0);
+                icon.className = "fa-solid fa-volume-high text-red-500";
+                text.innerText = "SOUND ON";
+            } else {
+                if (Tone.Transport.state === "started") {
+                    Tone.Transport.stop();
+                }
+                icon.className = "fa-solid fa-volume-xmark text-slate-400";
+                text.innerText = "SOUND OFF";
+            }
+        }
+
+        function playArcadeSound(type) {
+            if (!gameState.soundEnabled) return;
+            try {
+                const sfx = new Tone.Synth().toDestination();
+                sfx.volume.value = -10;
+                if (type === 'click') sfx.triggerAttackRelease("C5", "16n");
+                if (type === 'success') {
+                    const now = Tone.now();
+                    sfx.triggerAttackRelease("E5", "16n", now);
+                    sfx.triggerAttackRelease("G5", "16n", now + 0.08);
+                    sfx.triggerAttackRelease("C6", "8n", now + 0.16);
+                }
+                if (type === 'error') sfx.triggerAttackRelease("G2", "8n");
+            } catch(e) {}
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* INITIALIZATION & NAVIGATION                                                */
+        /* -------------------------------------------------------------------------- */
+        window.onload = function() {
+            renderSection2TopicTabs();
+            loadIndependentPrompt();
+        };
+
+        function addScore(pts) {
+            gameState.score += pts;
+            document.getElementById('scoreDisplay').innerText = String(gameState.score).padStart(4, '0');
+        }
+
+        function switchLoginRole(role) {
+            playArcadeSound('click');
+            gameState.role = role;
+            const tabSt = document.getElementById('tabStudentRole');
+            const tabTc = document.getElementById('tabTeacherRole');
+            const stFields = document.getElementById('studentFormFields');
+            const tcFields = document.getElementById('teacherFormFields');
+
+            if (role === 'student') {
+                tabSt.className = "w-1/2 py-2 bg-red-500 text-white font-bold border-r border-slate-900";
+                tabTc.className = "w-1/2 py-2 bg-slate-200 text-slate-700 font-bold";
+                stFields.classList.remove('hidden');
+                tcFields.classList.add('hidden');
+                document.getElementById('currentRoleBadge').innerText = "STUDENT MODE";
+            } else {
+                tabTc.className = "w-1/2 py-2 bg-purple-600 text-white font-bold";
+                tabSt.className = "w-1/2 py-2 bg-slate-200 text-slate-700 font-bold border-r border-slate-900";
+                tcFields.classList.remove('hidden');
+                stFields.classList.add('hidden');
+                document.getElementById('currentRoleBadge').innerText = "TEACHER MODE";
+            }
+        }
+
+        function startGame() {
+            const name = document.getElementById('studentNameInput').value.trim();
+            const cls = document.getElementById('classSelect').value;
+            if (!name) {
+                alert("Please enter your Student Name to start!");
+                return;
+            }
+            gameState.studentName = name;
+            gameState.studentClass = cls;
+            playArcadeSound('click');
+            navToSection(1);
+        }
+
+        /* Passcode Check Updated to 20232026 */
+        function loginAsTeacher() {
+            const pin = document.getElementById('teacherPinInput').value;
+            if (pin === "20232026") {
+                playArcadeSound('success');
+                openTeacherDashboard();
+            } else {
+                alert("Incorrect Passcode! Please check with your school administrator.");
+            }
+        }
+
+        function promptGoHome() {
+            playArcadeSound('click');
+            document.getElementById('homePromptModal').classList.remove('hidden');
+        }
+
+        function confirmGoHome() {
+            closeModal('homePromptModal');
+            gameState.score = 0;
+            document.getElementById('scoreDisplay').innerText = "0000";
+            navToSection(0);
+        }
+
+        function navToSection(secNum) {
+            playArcadeSound('click');
+            gameState.currentSection = secNum;
+
+            document.getElementById('screenLanding').classList.add('hidden');
+            document.getElementById('screenSection1').classList.add('hidden');
+            document.getElementById('screenSection2').classList.add('hidden');
+            document.getElementById('screenSection3').classList.add('hidden');
+
+            if (secNum === 0) document.getElementById('screenLanding').classList.remove('hidden');
+            if (secNum === 1) document.getElementById('screenSection1').classList.remove('hidden');
+            if (secNum === 2) {
+                document.getElementById('screenSection2').classList.remove('hidden');
+                loadPuzzleTopic(gameState.puzzleCurrentTopic);
+            }
+            if (secNum === 3) document.getElementById('screenSection3').classList.remove('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Check Part 2 completion reminder popup */
+        function checkPart2CompletionAndNav() {
+            playArcadeSound('click');
+            if (gameState.completedTopicsPart2.size < 7) {
+                document.getElementById('part2IncompleteModal').classList.remove('hidden');
+            } else {
+                navToSection(3);
+            }
+        }
+
+        function confirmMoveToSection3() {
+            closeModal('part2IncompleteModal');
+            navToSection(3);
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* SECTION 2: EXPLORING TOPICS & PUZZLE                                       */
+        /* -------------------------------------------------------------------------- */
+        function renderSection2TopicTabs() {
+            const container = document.getElementById('topicTabsContainerSection2');
+            container.innerHTML = '';
+
+            TOPICS_DATA.forEach((top, idx) => {
+                const isDone = gameState.completedTopicsPart2.has(idx);
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1.5 rounded-xl border-2 border-slate-900 font-pixel text-[10px] flex items-center gap-1.5 transition-all ${
+                    idx === gameState.puzzleCurrentTopic 
+                    ? 'bg-blue-600 text-white shadow-[2px_2px_0_#1e272e]' 
+                    : isDone ? 'bg-green-100 text-green-800' : 'bg-white text-slate-800 hover:bg-yellow-100'
+                }`;
+                btn.innerHTML = `<i class="fa-solid ${top.icon}"></i> ${top.title} ${isDone ? '✓' : ''}`;
+                btn.onclick = () => loadPuzzleTopic(idx);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('topicPracticeStatus').innerText = `${gameState.completedTopicsPart2.size}/7 COMPLETED`;
+        }
+
+        function loadPuzzleTopic(idx) {
+            gameState.puzzleCurrentTopic = idx;
+            renderSection2TopicTabs();
+
+            const topic = TOPICS_DATA[idx];
+            document.getElementById('mixupTopicBadge').innerText = topic.title;
+            document.getElementById('mixupPromptText').innerText = topic.part2Prompt;
+
+            const blocks = topic.sampleEmailBlocks.map((b, k) => ({ ...b, key: k + 1 }));
+            gameState.puzzleScrambledSentences = [...blocks].sort(() => Math.random() - 0.5);
+            gameState.puzzlePlacedSentences = [];
+
+            renderPuzzlePools();
+        }
+
+        function renderPuzzlePools() {
+            const poolEl = document.getElementById('scrambledPool');
+            const draftEl = document.getElementById('assembledDraft');
+            const countEl = document.getElementById('placedCount');
+
+            poolEl.innerHTML = '';
+            draftEl.innerHTML = '';
+
+            if (gameState.puzzleScrambledSentences.length === 0) {
+                poolEl.innerHTML = `<p class="text-xs text-green-600 font-bold text-center py-10 font-sans">All tiles placed! Click 'CHECK & GET +150 PTS' to check your answer.</p>`;
+            } else {
+                gameState.puzzleScrambledSentences.forEach((item, index) => {
+                    const block = document.createElement('div');
+                    block.className = "sentence-tile bg-white border-2 border-slate-900 p-2.5 rounded-xl shadow-[3px_3px_0_#1e272e] text-xs text-slate-800 font-mono flex items-start gap-2 hover:bg-yellow-100";
+                    block.innerHTML = `<i class="fa-solid fa-grip-vertical text-slate-400 mt-1"></i> <span class="whitespace-pre-wrap">${item.text}</span>`;
+                    block.onclick = () => placeSentence(index);
+                    poolEl.appendChild(block);
+                });
+            }
+
+            countEl.innerText = `${gameState.puzzlePlacedSentences.length} / 7 PLACED`;
+
+            if (gameState.puzzlePlacedSentences.length === 0) {
+                draftEl.innerHTML = `<p id="emptyDraftPlaceholder" class="text-slate-400 text-xs italic text-center py-10 font-sans">
+                    Click on sentence tiles on the left to stack them here in logical order:<br>
+                    Greet → Respond → Reasons → All done → Take leave
+                </p>`;
+            } else {
+                gameState.puzzlePlacedSentences.forEach((item, index) => {
+                    const block = document.createElement('div');
+                    block.className = "bg-white border-2 border-slate-900 p-2 rounded-xl shadow-[2px_2px_0_#1e272e] text-xs text-slate-800 font-mono flex justify-between items-start gap-2";
+                    block.innerHTML = `
+                        <div class="flex items-start gap-2">
+                            <span class="font-pixel text-[9px] bg-slate-800 text-yellow-300 px-1.5 py-0.5 rounded mt-0.5">${index + 1}</span>
+                            <span class="whitespace-pre-wrap">${item.text}</span>
+                        </div>
+                        <button onclick="unplaceSentence(${index})" class="text-red-500 hover:text-red-700 font-pixel text-[10px] px-1">✕</button>
+                    `;
+                    draftEl.appendChild(block);
+                });
+            }
+        }
+
+        function placeSentence(index) {
+            const item = gameState.puzzleScrambledSentences.splice(index, 1)[0];
+            gameState.puzzlePlacedSentences.push(item);
+            playArcadeSound('click');
+            renderPuzzlePools();
+        }
+
+        function unplaceSentence(index) {
+            const item = gameState.puzzlePlacedSentences.splice(index, 1)[0];
+            gameState.puzzleScrambledSentences.push(item);
+            playArcadeSound('click');
+            renderPuzzlePools();
+        }
+
+        function resetPuzzle() {
+            playArcadeSound('click');
+            loadPuzzleTopic(gameState.puzzleCurrentTopic);
+        }
+
+        function checkPuzzleAnswer() {
+            if (gameState.puzzlePlacedSentences.length < 7) {
+                alert("Please place all 7 email blocks before checking!");
+                return;
+            }
+
+            let isCorrect = true;
+            for (let i = 0; i < 7; i++) {
+                if (gameState.puzzlePlacedSentences[i].key !== (i + 1)) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            if (isCorrect) {
+                playArcadeSound('success');
+                if (!gameState.completedTopicsPart2.has(gameState.puzzleCurrentTopic)) {
+                    addScore(150);
+                    gameState.completedTopicsPart2.add(gameState.puzzleCurrentTopic);
+                }
+                alert("🎉 AWESOME! Correct G.R.E.A.T order! (+150 PTS)");
+                renderSection2TopicTabs();
+            } else {
+                playArcadeSound('error');
+                alert("❌ Not quite! Analyze the sentences again to follow: Greet → Respond → Reasons → All done → Take leave.");
+            }
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* SECTION 3: INDEPENDENT WRITING STUDIO ENGINE                               */
+        /* -------------------------------------------------------------------------- */
+        function loadIndependentPrompt() {
+            const selectEl = document.getElementById('writingTopicSelect');
+            const topicIdx = parseInt(selectEl.value);
+            const topic = TOPICS_DATA[topicIdx];
+
+            document.getElementById('promptInstructionsText').innerText = topic.part3Prompt;
+            document.getElementById('recipientEmailDisplay').innerText = topic.recipient;
+            document.getElementById('emailSubjectInput').value = topic.subject;
+
+            // Vocab chips
+            const vocabContainer = document.getElementById('topicVocabChips');
+            vocabContainer.innerHTML = '';
+            topic.vocab.forEach(word => {
+                const chip = document.createElement('button');
+                chip.className = "bg-white border-2 border-slate-900 text-slate-800 text-xs px-2 py-1 rounded-lg shadow-[2px_2px_0_#1e272e] font-semibold hover:bg-emerald-100";
+                chip.innerText = `+ ${word}`;
+                chip.onclick = () => insertTextAtCursor(word + " ");
+                vocabContainer.appendChild(chip);
+            });
+
+            // Helper Chips
+            const startersContainer = document.getElementById('sentenceStartersBank');
+            startersContainer.innerHTML = '';
+            topic.starters.forEach(starter => {
+                const btn = document.createElement('button');
+                btn.className = "bg-white border-2 border-slate-900 text-slate-800 text-xs p-2 rounded-xl shadow-[2px_2px_0_#1e272e] text-left hover:bg-sky-100 font-medium";
+                btn.innerText = starter;
+                btn.onclick = () => insertTextAtCursor(starter + "\n");
+                startersContainer.appendChild(btn);
+            });
+
+            updateWordCount();
+        }
+
+        function insertTextAtCursor(text) {
+            const textarea = document.getElementById('emailBodyTextarea');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const val = textarea.value;
+
+            textarea.value = val.substring(0, start) + text + val.substring(end);
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = start + text.length;
+
+            playArcadeSound('click');
+            updateWordCount();
+        }
+
+        function updateWordCount() {
+            const textarea = document.getElementById('emailBodyTextarea');
+            const text = textarea.value.trim();
+            const words = text ? text.split(/\s+/).filter(w => w.length > 0) : [];
+            const count = words.length;
+
+            const badge = document.getElementById('wordCounterBadge');
+            badge.innerText = `${count} / 70 words`;
+
+            if (count >= 50 && count <= 120) {
+                badge.className = "font-pixel text-xs px-3 py-1 rounded-lg border-2 border-slate-900 bg-green-500 text-white";
+            } else if (count > 0 && count < 50) {
+                badge.className = "font-pixel text-xs px-3 py-1 rounded-lg border-2 border-slate-900 bg-yellow-400 text-slate-900";
+            } else {
+                badge.className = "font-pixel text-xs px-3 py-1 rounded-lg border-2 border-slate-900 bg-red-500 text-white";
+            }
+
+            // Real-time Checklist Evaluator
+            const lower = text.toLowerCase();
+            const hasGreeting = /hi|hello|dear/.test(lower);
+            const hasRespond = /thanks for asking|great to hear|happy to help|in my opinion|my choice|i think you should/.test(lower);
+            const hasReason1 = /first|firstly|one reason/.test(lower);
+            const hasReason2 = /also|secondly|another reason/.test(lower);
+            const hasReason3 = /finally|thirdly|lastly|another detail/.test(lower);
+            const hasAllDone = /i hope|write back soon|hope this helps/.test(lower);
+            
+            const hasTakeLeave = /bye|regards/.test(lower) && gameState.studentName && lower.includes(gameState.studentName.toLowerCase());
+
+            toggleChecklist('chkG', hasGreeting);
+            toggleChecklist('chkR', hasRespond);
+            toggleChecklist('chkE1', hasReason1);
+            toggleChecklist('chkE2', hasReason2);
+            toggleChecklist('chkE3', hasReason3);
+            toggleChecklist('chkA', hasAllDone);
+            toggleChecklist('chkT', hasTakeLeave);
+
+            if (hasTakeLeave) {
+                toggleChecklist('chkG', true);
+                toggleChecklist('chkR', true);
+                toggleChecklist('chkE1', true);
+                toggleChecklist('chkE2', true);
+                toggleChecklist('chkE3', true);
+                toggleChecklist('chkA', true);
+            }
+        }
+
+        function toggleChecklist(elemId, isActive) {
+            const el = document.getElementById(elemId);
+            if (!el) return;
+            if (isActive) {
+                el.className = "flex items-center gap-2 text-green-600 font-bold";
+                el.querySelector('i').className = "fa-solid fa-square-check";
+            } else {
+                el.className = "flex items-center gap-2 text-slate-400 font-semibold";
+                el.querySelector('i').className = "fa-regular fa-square";
+            }
+        }
+
+        /* Submit Independent Email with 120 Words Exceedance Block */
+        function submitIndependentEmail() {
+            const text = document.getElementById('emailBodyTextarea').value.trim();
+            const words = text ? text.split(/\s+/).filter(w => w.length > 0) : [];
+            const count = words.length;
+
+            if (count < 30) {
+                alert("Your email is too short! Try writing around 70 words to fulfill the task requirements.");
+                return;
+            }
+
+            // Exceedance rule block (121 words and above)
+            if (count > 120) {
+                playArcadeSound('error');
+                alert(`⚠️ WORD LIMIT EXCEEDED!\n\nYour email has ${count} words. The maximum allowed limit is 120 words. Please shorten your response before submitting.`);
+                return;
+            }
+
+            playArcadeSound('success');
+            addScore(500);
+
+            const newRecord = {
+                name: gameState.studentName || "Student",
+                className: gameState.studentClass || "2 SAKURA",
+                score: gameState.score,
+                words: count,
+                grade: "Pending Teacher Mark",
+                feedback: "Submitted successfully.",
+                body: text,
+                isMarked: false
+            };
+
+            classDatabase.unshift(newRecord);
+            saveDatabase();
+
+            const evalBox = document.getElementById('evalFeedbackBox');
+            evalBox.innerHTML = `
+                <p><strong>Student:</strong> ${newRecord.name} (${newRecord.className})</p>
+                <p><strong>Word Count:</strong> ${count} words (✅ Within allowed 120 limit)</p>
+                <p><strong>G.R.E.A.T. Steps:</strong> Evaluated and sent to Teacher Portal!</p>
+            `;
+
+            document.getElementById('evaluationModal').classList.remove('hidden');
+        }
+
+        function exitGameToHome() {
+            closeModal('evaluationModal');
+            navToSection(0);
+        }
+
+        function openScoreboardFromEval() {
+            closeModal('evaluationModal');
+            openScoreboardModal();
+        }
+
+        /* -------------------------------------------------------------------------- */
+        /* MODALS, SCOREBOARD & TEACHER PORTAL                                         */
+        /* -------------------------------------------------------------------------- */
+        function openHowToPlayModal() {
+            playArcadeSound('click');
+            document.getElementById('howToPlayModal').classList.remove('hidden');
+        }
+
+        function openScoreboardModal() {
+            playArcadeSound('click');
+            const cls = gameState.studentClass || "2 SAKURA";
+            document.getElementById('scoreboardClassHeader').innerText = `CLASS: ${cls}`;
+
+            const filtered = classDatabase.filter(r => r.className === cls).sort((a,b) => b.score - a.score);
+            const tbody = document.getElementById('scoreboardTableBody');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-slate-400 italic">No class records yet!</td></tr>`;
+            } else {
+                filtered.forEach((r, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.className = idx % 2 === 0 ? 'bg-white' : 'bg-slate-100';
+                    tr.innerHTML = `
+                        <td class="p-2 font-bold">${idx + 1}</td>
+                        <td class="p-2">${r.name}</td>
+                        <td class="p-2 text-right font-pixel text-indigo-700">${r.score}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('scoreboardModal').classList.remove('hidden');
+        }
+
+        function closeScoreboardAndExit() {
+            closeModal('scoreboardModal');
+            navToSection(0);
+        }
+
+        let activeMarkingIndex = -1;
+
+        function openTeacherDashboard() {
+            const tbody = document.getElementById('teacherSubmissionsTableBody');
+            tbody.innerHTML = '';
+
+            classDatabase.forEach((rec, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = idx % 2 === 0 ? 'bg-white' : 'bg-slate-100';
+                
+                // Action column toggles to 'MARKED' once graded but remains clickable for review/update
+                const actionBtnHTML = rec.isMarked 
+                    ? `<button onclick="reviewSubmission(${idx})" class="btn-arcade btn-green text-[9px] py-1 px-2">MARKED</button>`
+                    : `<button onclick="reviewSubmission(${idx})" class="btn-arcade btn-yellow text-[9px] py-1 px-2">MARK</button>`;
+
+                tr.innerHTML = `
+                    <td class="p-2 font-bold">${rec.name}</td>
+                    <td class="p-2">${rec.className}</td>
+                    <td class="p-2">${rec.score}</td>
+                    <td class="p-2">${rec.words}</td>
+                    <td class="p-2"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded border border-purple-300 font-bold text-[10px]">${rec.grade}</span></td>
+                    <td class="p-2 text-right">${actionBtnHTML}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('teacherDashboardModal').classList.remove('hidden');
+        }
+
+        function reviewSubmission(idx) {
+            activeMarkingIndex = idx;
+            const rec = classDatabase[idx];
+
+            document.getElementById('markingStudentName').innerText = rec.name;
+            document.getElementById('markingClassBadge').innerText = rec.className;
+            document.getElementById('markingEmailBodyText').innerText = rec.body;
+            document.getElementById('teacherFeedbackInput').value = rec.feedback || "";
+
+            document.getElementById('teacherMarkingPanel').classList.remove('hidden');
+        }
+
+        function saveTeacherMarking() {
+            if (activeMarkingIndex < 0) return;
+            const grade = document.getElementById('teacherGradeSelect').value;
+            const feedback = document.getElementById('teacherFeedbackInput').value;
+
+            classDatabase[activeMarkingIndex].grade = grade;
+            classDatabase[activeMarkingIndex].feedback = feedback;
+            classDatabase[activeMarkingIndex].isMarked = true; // Mark action status
+            saveDatabase();
+
+            alert("Marking saved and recorded!");
+            openTeacherDashboard();
+        }
+
+        function exportRecordsToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,Student Name,Class,Score,Word Count,Grade,Teacher Feedback,Submitted Email\n";
+            classDatabase.forEach(r => {
+                // Escape quotes inside the email body for valid CSV formatting
+                const escapedBody = (r.body || "").replace(/"/g, '""');
+                const escapedFeedback = (r.feedback || "").replace(/"/g, '""');
+                csvContent += `"${r.name}","${r.className}",${r.score},${r.words},"${r.grade}","${escapedFeedback}","${escapedBody}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Form2_English_Email_Records.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function closeModal(id) {
+            playArcadeSound('click');
+            document.getElementById(id).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
